@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home | Scopus Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #0f172a;
+    }
+
+    .navbar {
+      height: 72px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 35px;
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1d4ed8;
+    }
+
+    .logout-btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #ef4444;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .container {
+      padding: 35px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #1d4ed8, #2563eb);
+      color: white;
+      padding: 34px;
+      border-radius: 26px;
+      margin-bottom: 28px;
+      box-shadow: 0 18px 45px rgba(37, 99, 235, 0.28);
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #dbeafe;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+    }
+
+    .summary-card h3 {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .summary-card p {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .topic-search-card {
+      background: white;
+      border-radius: 24px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .topic-search-card h2 {
+      font-size: 23px;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .topic-search-card p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .topic-search-box {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .topic-search-box input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      font-size: 15px;
+    }
+
+    .topic-search-box button,
+    .topic-buttons button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 14px;
+      background: #2563eb;
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .topic-search-box .clear-btn {
+      background: #64748b;
+    }
+
+    .topic-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .topic-buttons button {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .topic-results {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .topic-result-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 16px;
+      background: #f8fafc;
+    }
+
+    .topic-result-card h4 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      color: #0f172a;
+      line-height: 1.4;
+    }
+
+    .topic-result-card h4 a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .topic-result-card h4 a:hover {
+      text-decoration: underline;
+    }
+
+    .topic-result-card p {
+      margin-bottom: 5px;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .match-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .toolbar {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+    }
+
+    .toolbar input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      font-size: 15px;
+    }
+
+    .toolbar button {
+      padding: 14px 22px;
+      border: none;
+      border-radius: 14px;
+      background: #2563eb;
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .table-card {
+      background: white;
+      border-radius: 24px;
+      padding: 25px;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+      overflow-x: auto;
+    }
+
+    .table-card h2 {
+      margin-bottom: 6px;
+      font-size: 23px;
+    }
+
+    .result-info {
+      margin-bottom: 18px;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1250px;
+    }
+
+    th {
+      background: #eff6ff;
+      color: #1e3a8a;
+      text-align: left;
+      padding: 15px;
+      font-size: 14px;
+      border-bottom: 2px solid #dbeafe;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    tr:hover {
+      background: #f8fafc;
+    }
+
+    .author-name {
+      font-weight: 800;
+      color: #0f172a;
+      min-width: 260px;
+    }
+
+    .small-muted {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .paper-list {
+      list-style: none;
+      max-width: 430px;
+    }
+
+    .paper-list li {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .selected-paper-list li {
+  padding: 10px;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  background: #f8fbff;
+}
+
+.paper-rank-badge {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+    .paper-list a {
+      color: #2563eb;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .paper-list a:hover,
+    .modal-paper a:hover {
+      text-decoration: underline;
+    }
+
+    .more-btn {
+      padding: 9px 14px;
+      border: none;
+      border-radius: 12px;
+      background: #0f172a;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .status {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 800;
+      font-size: 13px;
+      display: inline-block;
+    }
+
+    .loading {
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .modal {
+      background: white;
+      width: 100%;
+      max-width: 900px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-header h2 {
+      color: #0f172a;
+      font-size: 22px;
+    }
+
+    .close-btn {
+      border: none;
+      background: #ef4444;
+      color: white;
+      padding: 9px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .modal-paper {
+      padding: 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      background: #f8fafc;
+    }
+
+    .modal-paper h4 {
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .modal-paper p {
+      margin-bottom: 5px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .modal-paper a {
+      color: #2563eb;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .error-text {
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .toolbar,
+      .topic-search-box {
+        flex-direction: column;
+      }
+
+      .toolbar button,
+      .topic-search-box button {
+        width: 100%;
+      }
+
+      .topic-results {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="navbar">
+    <div class="logo">Scopus Dashboard</div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>MJIIT Researcher Monitoring Dashboard</h1>
+      <p>
+        This dashboard displays selected MJIIT researchers from Supabase.
+        Author metrics such as Scopus Author ID, total documents, and h-index are stored in the database.
+        Publications are linked to each researcher and open directly in Scopus.
+      </p>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h3>Total Researchers</h3>
+        <p id="totalResearchers">0</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Total Publications</h3>
+        <p id="totalPublications">0</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Database</h3>
+        <p style="font-size:18px;color:#166534;">Supabase Active</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Scopus Links</h3>
+        <p style="font-size:18px;color:#1d4ed8;">Enabled</p>
+      </div>
+    </div>
+
+    <div class="topic-search-card">
+      <h2>Topic / Journal Smart Search</h2>
+      <p>
+        Search research topics such as robotics, AI, drone, cybersecurity, communication, medical imaging, or any journal/topic keyword.
+      </p>
+
+      <div class="topic-search-box">
+        <input
+          type="text"
+          id="topicSearchInput"
+          placeholder="Search topic or journal, e.g. robotics, robot, AI, UAV..."
+          onkeyup="smartTopicSearch()"
+        />
+        <button onclick="smartTopicSearch()">Search</button>
+        <button class="clear-btn" onclick="clearTopicSearch()">Clear</button>
+      </div>
+
+      <div class="topic-buttons">
+        <button onclick="quickTopicSearch('robotics')">Robotics</button>
+        <button onclick="quickTopicSearch('ai')">AI</button>
+        <button onclick="quickTopicSearch('drone')">Drone / UAV</button>
+        <button onclick="quickTopicSearch('cybersecurity')">Cybersecurity</button>
+        <button onclick="quickTopicSearch('communication')">Communication</button>
+        <button onclick="quickTopicSearch('medical imaging')">Medical Imaging</button>
+      </div>
+
+      <p class="result-info" id="topicResultInfo">No topic search yet.</p>
+
+      <div class="topic-results" id="topicResults">
+        <p class="small-muted">Search a topic to view related publications.</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <input
+        type="text"
+        id="filterInput"
+        placeholder="Search researcher in this dashboard..."
+        onkeyup="filterResearchers()"
+      />
+      <button onclick="loadDashboard()">Refresh Dashboard</button>
+    </div>
+
+    <div class="table-card">
+      <h2>Researcher List</h2>
+      <p class="result-info">
+        Click “More” to view publications belonging only to that selected researcher.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Author Name</th>
+            <th>Scopus Author ID</th>
+            <th>Total Documents</th>
+            <th>H-Index</th>
+            <th>Selected Papers</th>
+            <th>More</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="researcherTable">
+          <tr>
+            <td colspan="8">Loading researchers from Supabase...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="paperModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Publications</h2>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+      </div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+
+  <script>
+    let researchers = [];
+    let publications = [];
+
+    const topicSynonyms = {
+      robotics: [
+        "robotics",
+        "robot",
+        "robots",
+        "robotic",
+        "automation",
+        "automated",
+        "autonomous",
+        "mechatronics",
+        "manipulator",
+        "motion control",
+        "path planning",
+        "collision avoidance"
+      ],
+
+      ai: [
+        "ai",
+        "artificial intelligence",
+        "machine learning",
+        "deep learning",
+        "neural network",
+        "cnn",
+        "nlp",
+        "computer vision",
+        "classification",
+        "prediction",
+        "intelligent"
+      ],
+
+      drone: [
+        "drone",
+        "uav",
+        "unmanned aerial vehicle",
+        "aerial",
+        "uav-to-uav",
+        "cellular-connected uav",
+        "flight",
+        "autonomous aerial"
+      ],
+
+      cybersecurity: [
+        "cybersecurity",
+        "cyber security",
+        "security",
+        "forensics",
+        "deepfake",
+        "deepforgery",
+        "malware",
+        "attack",
+        "data poisoning",
+        "information system security"
+      ],
+
+      communication: [
+        "communication",
+        "communications",
+        "network",
+        "wireless",
+        "cellular",
+        "semantic communication",
+        "vehicular",
+        "qoe",
+        "streaming",
+        "interference"
+      ],
+
+      "medical imaging": [
+        "medical imaging",
+        "mri",
+        "radiography",
+        "covid-19",
+        "medical",
+        "image classification",
+        "healthcare",
+        "diagnosis"
+      ]
+    };
+
+    async function loadDashboard() {
+      const table = document.getElementById("researcherTable");
+
+      table.innerHTML = `
+        <tr>
+          <td colspan="8">Loading dashboard data from Supabase...</td>
+        </tr>
+      `;
+
+      const { data: researcherData, error: researcherError } = await supabaseClient
+        .from("researchers")
+        .select("*")
+        .order("id", { ascending: true });
+
+      if (researcherError) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="8" class="error-text">
+              Failed to load researchers: ${researcherError.message}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const { data: publicationData, error: publicationError } = await supabaseClient
+        .from("publications")
+        .select("*")
+        .order("publication_date", { ascending: false });
+
+      if (publicationError) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="8" class="error-text">
+              Failed to load publications: ${publicationError.message}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      researchers = researcherData || [];
+      publications = publicationData || [];
+
+      document.getElementById("totalResearchers").innerText = researchers.length;
+      document.getElementById("totalPublications").innerText = publications.length;
+
+      renderResearchers(researchers);
+      smartTopicSearch();
+    }
+
+    function getPublicationsForResearcher(researcherId) {
+      return publications.filter(pub => pub.researcher_id === researcherId);
+    }
+
+    function getAuthorNameById(researcherId) {
+      const researcher = researchers.find((r) => r.id === researcherId);
+      return researcher ? researcher.name : "Unknown author";
+    }
+
+    function getSearchTerms(input) {
+      const search = input.toLowerCase().trim();
+
+      let terms = [search];
+
+      Object.keys(topicSynonyms).forEach((topic) => {
+        const synonyms = topicSynonyms[topic];
+
+        if (topic === search || synonyms.includes(search)) {
+          terms = [...terms, ...synonyms];
+        }
+      });
+
+      return [...new Set(terms)];
+    }
+
+    function smartTopicSearch() {
+      const inputElement = document.getElementById("topicSearchInput");
+      const topicResults = document.getElementById("topicResults");
+      const topicResultInfo = document.getElementById("topicResultInfo");
+
+      if (!inputElement || !topicResults || !topicResultInfo) return;
+
+      const input = inputElement.value.trim();
+
+      if (!input) {
+        topicResults.innerHTML = `<p class="small-muted">Search a topic to view related publications.</p>`;
+        topicResultInfo.innerText = "No topic search yet.";
+        return;
+      }
+
+      const terms = getSearchTerms(input);
+
+      const matchedPublications = publications.filter((paper) => {
+        const searchableText = `
+          ${paper.title || ""}
+          ${paper.journal || ""}
+          ${paper.doi || ""}
+          ${paper.scopus_document_id || ""}
+          ${paper.publication_date || ""}
+        `.toLowerCase();
+
+        return terms.some((term) => searchableText.includes(term));
+      });
+
+      topicResultInfo.innerText =
+        `Search: "${input}" | Related keywords: ${terms.join(", ")} | Results found: ${matchedPublications.length}`;
+
+      if (matchedPublications.length === 0) {
+        topicResults.innerHTML = `
+          <p class="small-muted">No matching publications found for "${input}".</p>
+        `;
+        return;
+      }
+
+      topicResults.innerHTML = matchedPublications.map((paper) => {
+        const authorName = getAuthorNameById(paper.researcher_id);
+
+        return `
+          <div class="topic-result-card">
+            <h4>
+              <a href="${paper.scopus_link || "#"}" target="_blank">
+                ${paper.title}
+              </a>
+            </h4>
+
+            <p><strong>Author:</strong> ${authorName}</p>
+            <p><strong>Journal:</strong> ${paper.journal || "No journal"}</p>
+            <p><strong>Date:</strong> ${paper.publication_date || "No date"}</p>
+            <p><strong>DOI:</strong> ${paper.doi || "No DOI"}</p>
+            <p><strong>Scopus Document ID:</strong> ${paper.scopus_document_id || "Not available"}</p>
+
+            <span class="match-badge">Topic Match</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function quickTopicSearch(topic) {
+      document.getElementById("topicSearchInput").value = topic;
+      smartTopicSearch();
+    }
+
+    function clearTopicSearch() {
+      document.getElementById("topicSearchInput").value = "";
+      document.getElementById("topicResults").innerHTML = `
+        <p class="small-muted">Search a topic to view related publications.</p>
+      `;
+      document.getElementById("topicResultInfo").innerText = "No topic search yet.";
+    }
+
+    function renderResearchers(list) {
+      const table = document.getElementById("researcherTable");
+
+      if (!list || list.length === 0) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="8">No researchers found in database.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      table.innerHTML = list.map((researcher, index) => {
+        const authorPapers = getPublicationsForResearcher(researcher.id);
+
+        let paperHtml = `<span class="loading">Selected papers not updated yet.</span>`;
+
+        const selectedPaper1Title = researcher.selected_paper_1_title;
+        const selectedPaper2Title = researcher.selected_paper_2_title;
+        const selectedPaper1Link =
+  researcher.selected_paper_1_link ||
+  findScopusLinkForSelectedPaper(researcher.id, selectedPaper1Title);
+
+const selectedPaper2Link =
+  researcher.selected_paper_2_link ||
+  findScopusLinkForSelectedPaper(researcher.id, selectedPaper2Title);
+
+        const hIndexNumber = Number(researcher.h_index);
+        const selectedPaper1Label = Number.isFinite(hIndexNumber) ? hIndexNumber : "-";
+        const selectedPaper2Label = Number.isFinite(hIndexNumber) ? hIndexNumber + 1 : "-";
+
+        if (selectedPaper1Title || selectedPaper2Title) {
+          paperHtml = `
+            <ul class="paper-list selected-paper-list">
+              ${selectedPaper1Title ? `
+                <li>
+                  <span class="paper-rank-badge">Paper ${selectedPaper1Label}</span>
+                  <a href="${selectedPaper1Link}" target="_blank">
+                    ${selectedPaper1Title}
+                  </a>
+                  <div class="small-muted">
+                    Selected by RPA based on current H-index from newest-to-oldest list
+                  </div>
+                </li>
+              ` : ""}
+
+              ${selectedPaper2Title ? `
+                <li>
+                  <span class="paper-rank-badge">Paper ${selectedPaper2Label}</span>
+                  <a href="${selectedPaper2Link}" target="_blank">
+                    ${selectedPaper2Title}
+                  </a>
+                  <div class="small-muted">
+                    Next paper after current H-index from newest-to-oldest list
+                  </div>
+                </li>
+              ` : ""}
+            </ul>
+          `;
+        }
+
+        const scopusId = researcher.scopus_author_id || "Pending";
+        const totalDocs = researcher.total_documents ?? "-";
+        const hIndex = researcher.h_index ?? "-";
+
+        return `
+          <tr>
+            <td>${index + 1}</td>
+
+            <td class="author-name">
+              ${researcher.name}
+              <div class="small-muted">Researcher ID: ${researcher.id}</div>
+            </td>
+
+            <td>
+              <span class="${scopusId === "Pending" ? "badge pending" : "badge"}">
+                ${scopusId}
+              </span>
+            </td>
+
+            <td>${totalDocs}</td>
+
+            <td><span class="badge">${hIndex}</span></td>
+
+            <td>${paperHtml}</td>
+
+            <td>
+              <button class="more-btn" onclick="openMore(${researcher.id})">
+                More
+              </button>
+            </td>
+
+            <td>
+              <span class="status">
+                ${authorPapers.length} Paper${authorPapers.length === 1 ? "" : "s"}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function openMore(researcherId) {
+      const researcher = researchers.find(r => r.id === researcherId);
+      const authorPapers = getPublicationsForResearcher(researcherId);
+
+      const modal = document.getElementById("paperModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalContent = document.getElementById("modalContent");
+
+      modalTitle.innerText = `${researcher.name} - Publications`;
+
+      if (authorPapers.length === 0) {
+        modalContent.innerHTML = `
+          <p>No publications have been added for this researcher yet.</p>
+        `;
+      } else {
+        modalContent.innerHTML = authorPapers.map(paper => `
+          <div class="modal-paper">
+            <h4>
+              <a href="${paper.scopus_link || "#"}" target="_blank">
+                ${paper.title}
+              </a>
+            </h4>
+            <p><strong>DOI:</strong> ${paper.doi || "No DOI"}</p>
+            <p><strong>Scopus Document ID:</strong> ${paper.scopus_document_id || "Not available"}</p>
+            <p><strong>Journal:</strong> ${paper.journal || "No journal"}</p>
+            <p><strong>Date:</strong> ${paper.publication_date || "No date"}</p>
+            <a href="${paper.scopus_link || "#"}" target="_blank">Open in Scopus</a>
+          </div>
+        `).join("");
+      }
+
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("paperModal").style.display = "none";
+    }
+
+    function filterResearchers() {
+      const keyword = document.getElementById("filterInput").value.toLowerCase();
+
+      const filtered = researchers.filter(r =>
+        r.name.toLowerCase().includes(keyword) ||
+        String(r.scopus_author_id || "").toLowerCase().includes(keyword)
+      );
+
+      renderResearchers(filtered);
+    }
+
+    loadDashboard();
+
+    function getPublicationsForResearcher(researcherId) {
+  return publications.filter(pub => pub.researcher_id === researcherId);
+}
+
+function findScopusLinkForSelectedPaper(researcherId, selectedTitle) {
+  if (!selectedTitle) return "#";
+
+  const normalize = (text) =>
+    String(text || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const selected = normalize(selectedTitle);
+
+  const matchedPaper = publications.find((paper) => {
+    return (
+      paper.researcher_id === researcherId &&
+      normalize(paper.title) === selected
+    );
+  });
+
+
+
+  return matchedPaper?.scopus_link || "#";
+
+  
+}
+  </script>
+</body>
+</html>

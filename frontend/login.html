@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Scopus Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #38bdf8, transparent 30%),
+                  linear-gradient(135deg, #020617, #0f172a, #1e293b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 26px;
+      padding: 42px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .brand-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1d4ed8, #06b6d4);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .brand h1 {
+      font-size: 30px;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .brand p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      height: 52px;
+      border-radius: 15px;
+      border: 1px solid #cbd5e1;
+      padding: 0 16px;
+      font-size: 15px;
+      background: #f8fafc;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      background: white;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .btn {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #2563eb, #0891b2);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.35);
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .switch a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="auth-card">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <h1>Welcome Back</h1>
+      <p>Login to access the Scopus Dashboard</p>
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="loginEmail" placeholder="Enter your email">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Enter your password">
+    </div>
+
+    <button class="btn" onclick="login()">Login</button>
+
+    <div class="switch">
+      Don’t have an account?
+      <a href="signup.html">Create account</a>
+    </div>
+
+    <div class="footer">
+      © 2026 Scopus Dashboard Project
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
