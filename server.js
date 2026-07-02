@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const cron = require("node-cron");
 const axios = require("axios");
@@ -23,9 +24,13 @@ const MAX_PUBLICATIONS_PER_RESEARCHER = 200;
 const SCOPUS_BATCH_SIZE = 25;
 
 // Test route
+// Serve login page first
 app.get("/", (req, res) => {
-  res.send("Scopus Backend Running 🚀");
+  res.sendFile(path.join(__dirname, "public", "login.html"));
 });
+
+// Serve frontend files
+app.use(express.static(path.join(__dirname, "public")));
 
 // Check keys
 app.get("/api/test-key", (req, res) => {
