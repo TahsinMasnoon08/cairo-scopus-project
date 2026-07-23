@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Reference Suggestion Tool | Cairo Scopus Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #0f172a;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      min-height: 72px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 35px;
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: 900;
+      color: #1d4ed8;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .back-btn,
+    .logout-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .back-btn {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .logout-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 35px 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #1d4ed8, #2563eb);
+      color: white;
+      padding: 34px;
+      border-radius: 26px;
+      margin-bottom: 24px;
+      box-shadow: 0 18px 45px rgba(37, 99, 235, 0.28);
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 38px);
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #dbeafe;
+      line-height: 1.7;
+      max-width: 850px;
+      font-size: 15px;
+    }
+
+    .tool-card {
+      background: white;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .tool-card h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .tool-card p {
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      font-size: 15px;
+      resize: vertical;
+      outline: none;
+      background: #f8fafc;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      background: white;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .primary-btn,
+    .clear-btn {
+      border: none;
+      padding: 13px 20px;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .primary-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .clear-btn {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .citation-loading {
+      margin-top: 18px;
+      color: #2563eb;
+      font-weight: 800;
+    }
+
+    .citation-results {
+      margin-top: 26px;
+    }
+
+    .citation-results h3 {
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+
+    .section-title {
+      margin-top: 24px;
+      margin-bottom: 12px;
+      font-size: 18px;
+      color: #0f172a;
+    }
+
+    .warning-note {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .citation-result-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .citation-result-card h3 {
+      font-size: 17px;
+      margin: 12px 0;
+      color: #111827;
+      line-height: 1.45;
+    }
+
+    .similarity-badge {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .citation-meta {
+      color: #475569;
+      font-size: 14px;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .citation-reference {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      padding: 13px;
+      border-radius: 12px;
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .copy-btn {
+      margin-top: 8px;
+      margin-right: 8px;
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 9px 13px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .copy-btn:hover {
+      background: #334155;
+    }
+
+    .error-text {
+      color: #dc2626;
+      font-weight: 800;
+    }
+
+    @media (max-width: 640px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 18px;
+      }
+
+      .nav-actions {
+        width: 100%;
+      }
+
+      .back-btn,
+      .logout-btn {
+        flex: 1;
+        text-align: center;
+      }
+
+      .container {
+        padding: 22px 14px;
+      }
+
+      .hero,
+      .tool-card {
+        border-radius: 20px;
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="navbar">
+    <div class="logo">Cairo Scopus Dashboard</div>
+
+    <div class="nav-actions">
+      <a href="home.html" class="back-btn">Back to Dashboard</a>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>Reference Suggestion Tool</h1>
+      <p>
+        Paste your project paragraph below. The system will suggest related references
+        from selected researcher publications first, then possible title-based matches
+        from other stored publications.
+      </p>
+    </div>
+
+    <div class="tool-card">
+      <h2>Find Related References</h2>
+      <p>
+        This tool suggests references using semantic matching. It helps users find related
+        papers, but users should still review the paper before using it as a final citation.
+      </p>
+
+      <textarea
+        id="citationParagraph"
+        placeholder="Paste your paragraph here..."
+      ></textarea>
+
+      <div class="button-row">
+        <button onclick="findCitations()" class="primary-btn">
+          Find References
+        </button>
+
+        <button onclick="clearCitationTool()" class="clear-btn">
+          Clear
+        </button>
+      </div>
+
+      <div id="citationLoading" class="citation-loading" style="display: none;">
+        Finding related references...
+      </div>
+
+      <div id="citationResults" class="citation-results"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+
+  <script>
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function findCitations() {
+      const paragraph = document.getElementById("citationParagraph").value.trim();
+      const resultsBox = document.getElementById("citationResults");
+      const loadingBox = document.getElementById("citationLoading");
+
+      resultsBox.innerHTML = "";
+
+      if (!paragraph) {
+        resultsBox.innerHTML = `
+          <p class="error-text">Please enter a paragraph first.</p>
+        `;
+        return;
+      }
+
+      loadingBox.style.display = "block";
+
+      try {
+        const response = await fetch("http://localhost:5000/api/find-citations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ paragraph })
+        });
+
+        const data = await response.json();
+
+        loadingBox.style.display = "none";
+
+        if (!data.success) {
+          resultsBox.innerHTML = `
+            <p class="error-text">${escapeHtml(data.error || "Failed to find citations.")}</p>
+          `;
+          return;
+        }
+
+        if (!data.results || data.results.length === 0) {
+          resultsBox.innerHTML = `
+            <p>No strong matching references found. Try using more specific technical terms.</p>
+          `;
+          return;
+        }
+
+        const renderPaperCard = (paper, index) => `
+          <div class="citation-result-card">
+            <span class="similarity-badge">Similarity: ${paper.similarity}%</span>
+
+            <div class="citation-meta">
+              <strong>Match Type:</strong> ${escapeHtml(paper.match_type || "N/A")}<br>
+              <strong>Match Strength:</strong> ${escapeHtml(paper.match_strength || "N/A")}<br>
+              <strong>Citation Suitability:</strong> ${escapeHtml(paper.citation_suitability || "N/A")}<br>
+              <strong>Reason:</strong> ${escapeHtml(paper.match_reason || "N/A")}
+            </div>
+
+            <h3>${index + 1}. ${escapeHtml(paper.title || "Untitled paper")}</h3>
+
+            <div class="citation-meta">
+              <strong>Researcher:</strong> ${escapeHtml(paper.researcher || "Unknown")}<br>
+              <strong>Journal:</strong> ${escapeHtml(paper.journal || "Unknown")}<br>
+              <strong>Year:</strong> ${paper.publication_date ? escapeHtml(String(paper.publication_date).slice(0, 4)) : "N/A"}<br>
+              <strong>DOI:</strong> ${escapeHtml(paper.doi || "N/A")}
+            </div>
+
+            <div class="citation-reference">
+              <strong>IEEE Reference:</strong><br>
+              <span id="ieee-${paper.id}">${escapeHtml(paper.ieee_reference || "")}</span>
+            </div>
+
+            <button class="copy-btn" onclick="copyText('ieee-${paper.id}')">
+              Copy IEEE
+            </button>
+
+            <div class="citation-reference">
+              <strong>APA Reference:</strong><br>
+              <span id="apa-${paper.id}">${escapeHtml(paper.apa_reference || "")}</span>
+            </div>
+
+            <button class="copy-btn" onclick="copyText('apa-${paper.id}')">
+              Copy APA
+            </button>
+
+            ${
+              paper.scopus_link
+                ? `
+                  <button class="copy-btn" onclick="window.open('${escapeHtml(paper.scopus_link)}', '_blank')">
+                    Open Scopus
+                  </button>
+                `
+                : ""
+            }
+          </div>
+        `;
+
+        const selectedResults = data.selected_results || [];
+        const titleResults = data.title_results || [];
+
+        resultsBox.innerHTML = `
+          <h3>Suggested References</h3>
+
+          ${
+            selectedResults.length > 0
+              ? `
+                <h4 class="section-title">
+                  Strong Semantic Matches from Selected Papers
+                </h4>
+                ${selectedResults.map((paper, index) => renderPaperCard(paper, index)).join("")}
+              `
+              : `
+                <p>No strong selected-paper match found.</p>
+              `
+          }
+
+          ${
+            titleResults.length > 0
+              ? `
+                <h4 class="section-title">
+                  Possible Title-Based Matches from Other Publications
+                </h4>
+                <div class="warning-note">
+                  These papers are matched using title and journal only. Please review before citing.
+                </div>
+                ${titleResults.map((paper, index) => renderPaperCard(paper, index)).join("")}
+              `
+              : ""
+          }
+        `;
+      } catch (error) {
+        loadingBox.style.display = "none";
+
+        resultsBox.innerHTML = `
+          <p class="error-text">Error: ${escapeHtml(error.message)}</p>
+        `;
+      }
+    }
+
+    function clearCitationTool() {
+      document.getElementById("citationParagraph").value = "";
+      document.getElementById("citationResults").innerHTML = "";
+      document.getElementById("citationLoading").style.display = "none";
+    }
+
+    function copyText(elementId) {
+      const text = document.getElementById(elementId).innerText;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied!");
+      });
+    }
+
+    async function logout() {
+      if (typeof supabaseClient !== "undefined") {
+        await supabaseClient.auth.signOut();
+      }
+
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
