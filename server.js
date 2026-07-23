@@ -515,18 +515,20 @@ app.post("/api/generate-title-embeddings", async (req, res) => {
       });
     }
 
-    const otherPapers = (papers || []).filter((paper) => {
+    // IMPORTANT:
+    // Generate title embeddings for selected papers too.
+    // Before, selected papers were excluded, so the reference tool could not match them.
+    const papersToEmbed = (papers || []).filter((paper) => {
       return (
         paper.title &&
         String(paper.title).trim() !== "" &&
-        paper.is_selected !== true &&
         !paper.title_embedding_json
       );
     });
 
     const results = [];
 
-    for (const paper of otherPapers) {
+    for (const paper of papersToEmbed) {
       try {
         const textForEmbedding = buildTitleEmbeddingText(paper);
         const embedding = await createEmbedding(textForEmbedding);
@@ -542,6 +544,7 @@ app.post("/api/generate-title-embeddings", async (req, res) => {
           results.push({
             id: paper.id,
             title: paper.title,
+            is_selected: paper.is_selected,
             status: "failed",
             error: updateError.message,
           });
@@ -551,12 +554,14 @@ app.post("/api/generate-title-embeddings", async (req, res) => {
         results.push({
           id: paper.id,
           title: paper.title,
+          is_selected: paper.is_selected,
           status: "success",
         });
       } catch (singleError) {
         results.push({
           id: paper.id,
           title: paper.title,
+          is_selected: paper.is_selected,
           status: "failed",
           error: singleError.message,
         });
@@ -565,8 +570,8 @@ app.post("/api/generate-title-embeddings", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Title embeddings generated for other publications",
-      total: otherPapers.length,
+      message: "Title embeddings generated for publications including selected papers",
+      total: papersToEmbed.length,
       results,
     });
   } catch (error) {
