@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Cairo Scopus Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .navbar {
+      min-height: 72px;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .navbar h1 {
+      font-size: clamp(19px, 2.5vw, 23px);
+      line-height: 1.2;
+    }
+
+    .navbar span {
+      color: #38bdf8;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 800;
+      background: #e0f2fe;
+      color: #0369a1;
+      white-space: nowrap;
+    }
+
+    .logout-btn {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 35px 40px;
+    }
+
+    .welcome-card,
+    .card,
+    .form-card,
+    .table-card {
+      background: white;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .welcome-card {
+      border-radius: 22px;
+      padding: clamp(22px, 3vw, 30px);
+      margin-bottom: 28px;
+    }
+
+    .welcome-card h2 {
+      font-size: clamp(24px, 4vw, 30px);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .welcome-card p {
+      color: #64748b;
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 920px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      border-radius: 20px;
+      padding: 24px;
+      min-width: 0;
+    }
+
+    .card p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .card h3 {
+      font-size: clamp(30px, 4vw, 38px);
+      color: #0f172a;
+      line-height: 1.1;
+    }
+
+    .form-card {
+      border-radius: 22px;
+      padding: clamp(20px, 3vw, 26px);
+      margin-bottom: 30px;
+    }
+
+    .form-card h2,
+    .table-card h2 {
+      font-size: clamp(20px, 3vw, 24px);
+      margin-bottom: 18px;
+      line-height: 1.3;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .form-group {
+      min-width: 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .form-group input {
+      width: 100%;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid #cbd5e1;
+      padding: 0 14px;
+      font-size: 14px;
+      background: #f8fafc;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .form-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .clear-btn,
+    .action-btn,
+    .close-btn {
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .primary-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 18px;
+      background: linear-gradient(135deg, #2563eb, #0891b2);
+      color: white;
+    }
+
+    .clear-btn {
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 13px 18px;
+      background: white;
+      color: #334155;
+    }
+
+    .table-card {
+      border-radius: 22px;
+      padding: clamp(20px, 3vw, 26px);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1050px;
+      background: white;
+    }
+
+    th,
+    td {
+      padding: 14px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #334155;
+      font-size: 13px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    td {
+      color: #334155;
+    }
+
+    .status {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .status-updated {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-failed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 20px;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .info {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      white-space: nowrap;
+    }
+
+    .action-btn:hover {
+      opacity: 0.9;
+    }
+
+    .delete-btn {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .link-btn {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .link-btn:hover {
+      text-decoration: underline;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      z-index: 9999;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 22px;
+      width: min(100%, 1250px);
+      max-height: 90vh;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 22px 28px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .modal-header h2 {
+      font-size: clamp(20px, 3vw, 25px);
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+
+    .modal-header p {
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      border: none;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .modal-content {
+      padding: 24px;
+      overflow: auto;
+      max-height: 70vh;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .publication-table {
+      min-width: 1000px;
+    }
+
+    .publication-title {
+      max-width: 430px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+.selected-paper-admin-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.selected-paper-admin-card h3 {
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.selected-paper-admin-card label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.selected-paper-admin-card input,
+.selected-paper-admin-card textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.selected-paper-admin-card input:focus,
+.selected-paper-admin-card textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.selected-paper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.selected-paper-full {
+  grid-column: 1 / -1;
+}
+
+.selected-paper-note {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  padding: 13px 15px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.open-scopus-btn {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  margin-right: 8px;
+}
+
+.open-scopus-btn:hover {
+  background: #1d4ed8;
+}
+
+.save-selected-paper-btn {
+  margin-top: 14px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.save-selected-paper-btn:hover {
+  background: #15803d;
+}
+
+.table-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.add-more-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.add-more-btn:hover {
+  opacity: 0.92;
+}
+
+.mini-btn {
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mini-btn:hover {
+  background: #bfdbfe;
+}
+
+.author-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.author-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.author-row input {
+  width: 100%;
+}
+
+.remove-author-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.remove-author-btn:hover {
+  background: #fecaca;
+}
+
+.add-author-btn {
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 900;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.add-author-btn:hover {
+  background: #bfdbfe;
+}
+
+.author-preview {
+  margin-top: 8px;
+  background: #f1f5f9;
+  border: 1px dashed #cbd5e1;
+  color: #334155;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+    @media (max-width: 1200px) {
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .navbar {
+        padding: 16px 20px;
+      }
+
+      .selected-paper-grid {
+  grid-template-columns: 1fr;
+}
+
+      .container {
+        padding: 25px 20px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .table-header-actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.add-more-btn {
+  width: 100%;
+}
+
+      .nav-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .nav-btn {
+        width: 100%;
+      }
+
+      .container {
+        padding: 18px 14px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .welcome-card,
+      .form-card,
+      .table-card {
+        border-radius: 18px;
+      }
+
+      .form-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .primary-btn,
+      .clear-btn {
+        width: 100%;
+      }
+
+      .modal-overlay {
+        padding: 10px;
+      }
+
+      .modal-box {
+        border-radius: 18px;
+        max-height: 92vh;
+      }
+
+      .modal-header {
+        padding: 18px;
+        align-items: flex-start;
+      }
+
+      .modal-content {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="navbar">
+    <h1>Cairo Scopus <span>Admin Dashboard</span></h1>
+
+    <div class="nav-actions">
+      <button class="nav-btn" onclick="goHome()">View Website</button>
+      <button class="nav-btn logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="messageBox" class="message"></div>
+
+    <div class="welcome-card">
+      <h2>Welcome, Admin</h2>
+      <p>
+        Manage lecturers, view imported Scopus publications, delete incorrect publications,
+        and remove lecturers from the database.
+      </p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <p>Total Researchers</p>
+        <h3 id="totalResearchers">0</h3>
+      </div>
+
+      <div class="card">
+        <p>Total Publications</p>
+        <h3 id="totalPublications">0</h3>
+      </div>
+
+      <div class="card">
+        <p>Updated Researchers</p>
+        <h3 id="updatedResearchers">0</h3>
+      </div>
+
+      <div class="card">
+        <p>Pending Researchers</p>
+        <h3 id="pendingResearchers">0</h3>
+      </div>
+    </div>
+
+    <div class="form-card" id="addLecturerSection">
+  <h2>Add New Lecturer</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="lecturerName">Lecturer Name *</label>
+          <input type="text" id="lecturerName" placeholder="Example: Liyana Adilla Burhanuddin" />
+        </div>
+
+        <div class="form-group">
+          <label for="scopusAuthorId">Scopus Author ID *</label>
+          <input type="text" id="scopusAuthorId" placeholder="Example: 56105259400" />
+        </div>
+
+<div class="form-group">
+  <label for="scopusProfileUrl">Scopus Profile URL</label>
+  <input
+    type="text"
+    id="scopusProfileUrl"
+    placeholder="Paste Scopus profile link here"
+    oninput="extractAuthorIdFromScopusLink()"
+  />
+  <button type="button" class="mini-btn" onclick="extractAuthorIdFromScopusLink()">
+    Extract Author ID
+  </button>
+</div>
+
+        <div class="form-group">
+          <label for="searchKeyword">Search Keyword</label>
+          <input type="text" id="searchKeyword" placeholder="Default: same as lecturer name" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="primary-btn" onclick="addLecturer()">Add Lecturer</button>
+        <button class="clear-btn" onclick="clearLecturerForm()">Clear</button>
+      </div>
+    </div>
+
+<div class="table-card">
+  <div class="table-header-actions">
+    <h2>Researchers</h2>
+
+    <button class="add-more-btn" onclick="scrollToAddLecturer()">
+      + Add More Lecturer
+    </button>
+  </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Scopus ID</th>
+              <th>Total Docs</th>
+              <th>H-Index</th>
+              <th>H-index Status</th>
+              <th>Update Method</th>
+              <th>Last Checked</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="researchersTable">
+            <tr>
+              <td colspan="8">Loading researchers...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="publicationsModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalResearcherName">Publications</h2>
+          <p id="modalPublicationCount">Loading...</p>
+        </div>
+
+        <button class="close-btn" onclick="closePublicationsModal()">×</button>
+      </div>
+
+      <div class="modal-content">
+        <table class="publication-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Journal / Source</th>
+              <th>Year / Date</th>
+              <th>DOI</th>
+              <th>Scopus Link</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="publicationsTableBody">
+            <tr>
+              <td colspan="6">Loading publications...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="selectedPapersModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h2 id="selectedPapersTitle">Selected Papers</h2>
+          <p>
+            View selected papers detected by automation and add metadata for semantic matching.
+          </p>
+        </div>
+
+        <button class="close-btn" onclick="closeSelectedPapersModal()">×</button>
+      </div>
+
+      <div class="modal-content" id="selectedPapersContent">
+        <p>Loading selected papers...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+
+  <script>
+    let researchersCache = [];
+    let currentResearcherId = null;
+    let currentResearcherName = "";
+    let currentSelectedResearcherId = null;
+
+    function getSupabaseClient() {
+      if (typeof supabaseClient !== "undefined") return supabaseClient;
+
+      if (typeof supabase !== "undefined" && supabase.auth && supabase.from) {
+        return supabase;
+      }
+
+      return null;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function showMessage(message, type = "info") {
+      const box = document.getElementById("messageBox");
+      box.textContent = message;
+      box.className = "message " + type;
+      box.style.display = "block";
+
+      setTimeout(() => {
+        box.style.display = "none";
+      }, 7000);
+    }
+
+    function getResearcherId(researcher) {
+      return researcher.id ?? researcher.researcher_id ?? researcher.author_id;
+    }
+
+    function getResearcherProfileUrl(researcher) {
+      return researcher.scopus_profile_url || researcher.profile_url || researcher.profile_link || "";
+    }
+
+    function getHIndexStatus(researcher) {
+      if (researcher.h_index_status) return researcher.h_index_status;
+      if (researcher.h_index !== null && researcher.h_index !== undefined && researcher.h_index !== "") return "updated";
+      return "pending";
+    }
+
+    function getUpdateMethod(researcher) {
+      return researcher.h_index_update_method || researcher.update_method || "-";
+    }
+
+    function getLastChecked(researcher) {
+      return researcher.h_index_last_checked || researcher.last_checked || researcher.updated_at || null;
+    }
+
+    async function checkAdminAccess() {
+      const db = getSupabaseClient();
+
+      if (!db) {
+        alert("Supabase connection not found. Please check auth.js.");
+        window.location.href = "login.html";
+        return false;
+      }
+
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+
+      if (sessionError || !sessionData.session) {
+        window.location.href = "login.html";
+        return false;
+      }
+
+      const user = sessionData.session.user;
+
+      const { data: profile, error } = await db
+        .from("user_profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      if (error || !profile) {
+        alert("No user role found.");
+        window.location.href = "login.html";
+        return false;
+      }
+
+      if (profile.role !== "admin") {
+        alert("Access denied. Admin only.");
+        window.location.href = "home.html";
+        return false;
+      }
+
+      return true;
+    }
+
+    async function loadDashboardData() {
+      const db = getSupabaseClient();
+
+      if (!db) {
+        showMessage("Supabase connection not found.", "error");
+        return;
+      }
+
+      const { data: researchers, error: researcherError } = await db
+        .from("researchers")
+        .select("*")
+        .order("name", { ascending: true });
+
+      if (researcherError) {
+        showMessage("Failed to load researchers: " + researcherError.message, "error");
+        return;
+      }
+
+      const { count: publicationCount, error: publicationError } = await db
+        .from("publications")
+        .select("*", { count: "exact", head: true });
+
+      if (publicationError) {
+        showMessage("Failed to count publications: " + publicationError.message, "error");
+        return;
+      }
+
+      researchersCache = researchers || [];
+      renderStats(researchersCache, publicationCount || 0);
+      renderResearchersTable(researchersCache);
+    }
+
+    function renderStats(researchers, publicationCount) {
+      const totalResearchers = researchers.length;
+      const updatedResearchers = researchers.filter(researcher => getHIndexStatus(researcher) === "updated").length;
+      const pendingResearchers = researchers.filter(researcher => getHIndexStatus(researcher) === "pending").length;
+
+      document.getElementById("totalResearchers").textContent = totalResearchers;
+      document.getElementById("totalPublications").textContent = publicationCount;
+      document.getElementById("updatedResearchers").textContent = updatedResearchers;
+      document.getElementById("pendingResearchers").textContent = pendingResearchers;
+    }
+
+    function renderResearchersTable(researchers) {
+      const table = document.getElementById("researchersTable");
+
+      if (!researchers.length) {
+        table.innerHTML = `<tr><td colspan="8">No researchers found.</td></tr>`;
+        return;
+      }
+
+      table.innerHTML = researchers.map(researcher => {
+        const id = getResearcherId(researcher);
+        const safeId = escapeHtml(id);
+        const status = getHIndexStatus(researcher);
+        const statusClass = status === "updated" ? "status-updated" : status === "failed" ? "status-failed" : "status-pending";
+        const lastChecked = getLastChecked(researcher);
+        const profileUrl = getResearcherProfileUrl(researcher);
+
+        const nameHtml = profileUrl
+          ? `<a class="link-btn" href="${escapeHtml(profileUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(researcher.name || "-")}</a>`
+          : escapeHtml(researcher.name || "-");
+
+        return `
+          <tr>
+            <td>${nameHtml}</td>
+            <td>${escapeHtml(researcher.scopus_author_id || "-")}</td>
+            <td>${researcher.total_documents ?? "-"}</td>
+            <td>${researcher.h_index ?? "-"}</td>
+            <td><span class="status ${statusClass}">${escapeHtml(status)}</span></td>
+            <td>${escapeHtml(getUpdateMethod(researcher))}</td>
+            <td>${lastChecked ? new Date(lastChecked).toLocaleString() : "-"}</td>
+            <td>
+              <div class="action-group">
+                <button class="action-btn" onclick="viewPublicationsById('${safeId}')">View Publications</button>
+<button class="action-btn" onclick="openSelectedPapersModal('${safeId}')">Selected Papers</button>
+<button class="action-btn delete-btn" onclick="deleteLecturer('${safeId}')">Delete</button>
+                
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function generateScopusProfileUrl(authorId) {
+      return `https://www.scopus.com/authid/detail.uri?authorId=${encodeURIComponent(authorId)}`;
+    }
+
+    function extractAuthorIdFromScopusLink() {
+  const linkInput = document.getElementById("scopusProfileUrl");
+  const authorIdInput = document.getElementById("scopusAuthorId");
+
+  const link = linkInput.value.trim();
+
+  if (!link) return;
+
+  let authorId = "";
+
+  const authorIdMatch = link.match(/[?&]authorId=([^&]+)/);
+
+  if (authorIdMatch) {
+    authorId = decodeURIComponent(authorIdMatch[1]);
+  }
+
+  if (!authorId) {
+    const numericMatch = link.match(/\b\d{8,20}\b/);
+
+    if (numericMatch) {
+      authorId = numericMatch[0];
+    }
+  }
+
+  if (authorId) {
+    authorIdInput.value = authorId;
+  }
+}
+
+function scrollToAddLecturer() {
+  const section = document.getElementById("addLecturerSection");
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
+  setTimeout(() => {
+    document.getElementById("lecturerName")?.focus();
+  }, 400);
+}
+
+    function clearLecturerForm() {
+      document.getElementById("lecturerName").value = "";
+      document.getElementById("scopusAuthorId").value = "";
+      document.getElementById("scopusProfileUrl").value = "";
+      document.getElementById("searchKeyword").value = "";
+    }
+
+    function removeMissingColumnFromPayload(payload, errorMessage) {
+      const match = String(errorMessage).match(/'([^']+)' column/);
+      if (!match) return false;
+
+      const columnName = match[1];
+
+      if (Object.prototype.hasOwnProperty.call(payload, columnName)) {
+        delete payload[columnName];
+        return true;
+      }
+
+      return false;
+    }
+
+    async function insertResearcherWithFallback(db, payload) {
+      let currentPayload = { ...payload };
+
+      for (let attempt = 1; attempt <= 8; attempt++) {
+        const { data, error } = await db
+          .from("researchers")
+          .insert([currentPayload])
+          .select()
+          .single();
+
+        if (!error) return { data, error: null };
+
+        const removed = removeMissingColumnFromPayload(currentPayload, error.message);
+
+        if (!removed) return { data: null, error };
+      }
+
+      return {
+        data: null,
+        error: {
+          message: "Insert failed because too many columns did not match your researchers table."
+        }
+      };
+    }
+
+    async function addLecturer() {
+      const db = getSupabaseClient();
+
+      if (!db) {
+        showMessage("Supabase connection not found.", "error");
+        return;
+      }
+
+      const name = document.getElementById("lecturerName").value.trim();
+      const scopusAuthorId = document.getElementById("scopusAuthorId").value.trim();
+      let scopusProfileUrl = document.getElementById("scopusProfileUrl").value.trim();
+      let searchKeyword = document.getElementById("searchKeyword").value.trim();
+
+      if (!name || !scopusAuthorId) {
+        alert("Please enter Lecturer Name and Scopus Author ID.");
+        return;
+      }
+
+      if (!scopusProfileUrl) scopusProfileUrl = generateScopusProfileUrl(scopusAuthorId);
+      if (!searchKeyword) searchKeyword = name;
+
+      const confirmAdd = confirm(
+        "Add this lecturer?\n\n" +
+        "Name: " + name + "\n" +
+        "Scopus Author ID: " + scopusAuthorId
+      );
+
+      if (!confirmAdd) return;
+
+      const payload = {
+        name: name,
+        search_keyword: searchKeyword,
+        scopus_author_id: scopusAuthorId,
+        scopus_profile_url: scopusProfileUrl,
+        profile_url: scopusProfileUrl,
+        total_documents: null,
+        h_index: null,
+        h_index_status: "pending",
+        h_index_update_method: null,
+        update_method: null,
+        h_index_last_checked: null
+      };
+
+      const { error } = await insertResearcherWithFallback(db, payload);
+
+      if (error) {
+        if (String(error.message).toLowerCase().includes("row-level security")) {
+          alert(
+            "Failed to add lecturer because Supabase RLS blocked it.\n\n" +
+            "The HTML is fixed, but your database needs an admin insert/delete policy for the researchers table."
+          );
+        } else {
+          alert("Failed to add lecturer: " + error.message);
+        }
+
+        return;
+      }
+
+      showMessage("Lecturer added successfully. It will appear on the home page after data is imported/updated.", "success");
+      clearLecturerForm();
+      await loadDashboardData();
+    }
+
+    async function viewPublicationsById(researcherId) {
+      const researcher = researchersCache.find(
+        item => String(getResearcherId(item)) === String(researcherId)
+      );
+
+      if (!researcher) {
+        showMessage("Researcher not found.", "error");
+        return;
+      }
+
+      await viewPublications(getResearcherId(researcher), researcher.name || "Researcher");
+    }
+
+    async function fetchPublicationsForResearcher(db, researcherId) {
+      let response = await db
+        .from("publications")
+        .select("*")
+        .eq("researcher_id", researcherId);
+
+      if (!response.error) return response;
+
+      response = await db
+        .from("publications")
+        .select("*")
+        .eq("author_id", researcherId);
+
+      return response;
+    }
+
+    function sortPublications(publications) {
+      return [...publications].sort((a, b) => {
+        const aValue = a.publication_date || a.date || a.year || "";
+        const bValue = b.publication_date || b.date || b.year || "";
+
+        return String(bValue).localeCompare(String(aValue));
+      });
+    }
+
+    async function viewPublications(researcherId, researcherName) {
+      const db = getSupabaseClient();
+
+      if (!db) {
+        showMessage("Supabase connection not found.", "error");
+        return;
+      }
+
+      currentResearcherId = researcherId;
+      currentResearcherName = researcherName;
+
+      document.getElementById("publicationsModal").style.display = "block";
+      document.getElementById("modalResearcherName").textContent = researcherName + " - Publications";
+      document.getElementById("modalPublicationCount").textContent = "Loading publications...";
+      document.getElementById("publicationsTableBody").innerHTML = `<tr><td colspan="6">Loading publications...</td></tr>`;
+
+      const { data: publications, error } = await fetchPublicationsForResearcher(db, researcherId);
+
+      if (error) {
+        document.getElementById("publicationsTableBody").innerHTML = `
+          <tr>
+            <td colspan="6">Failed to load publications: ${escapeHtml(error.message)}</td>
+          </tr>
+        `;
+
+        document.getElementById("modalPublicationCount").textContent = "Error loading publications";
+        return;
+      }
+
+      renderPublicationsModal(sortPublications(publications || []));
+    }
+
+    function renderPublicationsModal(publications) {
+      const body = document.getElementById("publicationsTableBody");
+
+      document.getElementById("modalPublicationCount").textContent =
+        publications.length + " publications found";
+
+      if (!publications.length) {
+        body.innerHTML = `<tr><td colspan="6">No publications found for this researcher.</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = publications.map(publication => {
+        const title = escapeHtml(publication.title || publication.publication_title || "-");
+        const journal = escapeHtml(publication.journal || publication.source_title || publication.source || "-");
+        const date = escapeHtml(publication.publication_date || publication.date || publication.year || "-");
+        const doi = publication.doi ? escapeHtml(publication.doi) : "-";
+        const link = publication.scopus_link || publication.link || publication.url || "#";
+        const safeLink = escapeHtml(link);
+        const safeId = escapeHtml(publication.id);
+
+        return `
+          <tr id="publication-row-${safeId}">
+            <td class="publication-title">${title}</td>
+            <td>${journal}</td>
+            <td>${date}</td>
+            <td>${doi}</td>
+            <td>
+              ${link !== "#" ? `<a class="link-btn" href="${safeLink}" target="_blank" rel="noopener noreferrer">Open</a>` : "-"}
+            </td>
+            <td>
+              <button class="action-btn delete-btn" onclick="deletePublication('${safeId}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    async function deletePublication(publicationId) {
+      const db = getSupabaseClient();
+
+      if (!db) {
+        alert("Supabase connection not found.");
+        return;
+      }
+
+      const confirmDelete = confirm(
+        "Are you sure you want to delete this publication?\n\n" +
+        "This will remove it from the database and the home page."
+      );
+
+      if (!confirmDelete) return;
+
+      const { error } = await db
+        .from("publications")
+        .delete()
+        .eq("id", publicationId);
+
+      if (error) {
+        alert("Delete failed: " + error.message);
+        return;
+      }
+
+      showMessage("Publication deleted successfully. The home page will reflect this change.", "success");
+
+      if (currentResearcherId) {
+        await viewPublications(currentResearcherId, currentResearcherName);
+      }
+
+      await loadDashboardData();
+    }
+
+    async function deleteLecturerPublications(db, researcherId) {
+      let response = await db
+        .from("publications")
+        .delete()
+        .eq("researcher_id", researcherId);
+
+      if (!response.error) return response;
+
+      response = await db
+        .from("publications")
+        .delete()
+        .eq("author_id", researcherId);
+
+      return response;
+    }
+
+    async function deleteLecturer(researcherId) {
+      const db = getSupabaseClient();
+
+      if (!db) {
+        alert("Supabase connection not found.");
+        return;
+      }
+
+      const researcher = researchersCache.find(
+        item => String(getResearcherId(item)) === String(researcherId)
+      );
+
+      const researcherName = researcher ? researcher.name : "this lecturer";
+
+      const confirmDelete = confirm(
+        "Are you sure you want to delete " + researcherName + "?\n\n" +
+        "This will also delete all publications connected to this lecturer.\n\n" +
+        "This action will affect the home page."
+      );
+
+      if (!confirmDelete) return;
+
+      const { error: publicationDeleteError } = await deleteLecturerPublications(db, researcherId);
+
+      if (publicationDeleteError) {
+        alert("Failed to delete lecturer publications: " + publicationDeleteError.message);
+        return;
+      }
+
+      const { error: researcherDeleteError } = await db
+        .from("researchers")
+        .delete()
+        .eq("id", researcherId);
+
+      if (researcherDeleteError) {
+        alert("Failed to delete lecturer: " + researcherDeleteError.message);
+        return;
+      }
+
+      showMessage(researcherName + " deleted successfully. Home page will update automatically.", "success");
+      await loadDashboardData();
+    }
+
+    async function openSelectedPapersModal(researcherId) {
+  currentSelectedResearcherId = researcherId;
+
+  const modal = document.getElementById("selectedPapersModal");
+  const title = document.getElementById("selectedPapersTitle");
+  const content = document.getElementById("selectedPapersContent");
+
+  modal.style.display = "block";
+  title.textContent = "Selected Papers";
+  content.innerHTML = "<p>Loading selected papers...</p>";
+
+  try {
+    const response = await fetch(`/api/admin/selected-papers/${encodeURIComponent(researcherId)}`);
+
+    if (!response.ok) {
+      throw new Error(`API error ${response.status}: ${response.statusText}`);
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error("Selected papers API did not return JSON. Please check the /api/admin/selected-papers route in server.js.");
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      content.innerHTML = `<p style="color:red;">${escapeHtml(data.error || "Failed to load selected papers.")}</p>`;
+      return;
+    }
+
+    title.textContent = `${data.researcher?.name || "Researcher"} - Selected Papers`;
+
+    content.innerHTML = `
+      <div class="selected-paper-note">
+        These selected papers were detected by automation based on the researcher h-index.
+        Open the Scopus article, copy the missing metadata, then save it here to improve semantic reference matching.
+      </div>
+
+      ${renderSelectedPaperForm(data.selected_paper_1, 1, researcherId, data.researcher?.name || "")}
+${renderSelectedPaperForm(data.selected_paper_2, 2, researcherId, data.researcher?.name || "")}
+    `;
+
+    updateAuthorPreview(1);
+updateAuthorPreview(2);
+  } catch (error) {
+    content.innerHTML = `<p style="color:red;">${escapeHtml(error.message)}</p>`;
+  }
+}
+
+function splitAuthorsForInputs(authorsText, fallbackName) {
+  const raw = authorsText && String(authorsText).trim() !== ""
+    ? String(authorsText).trim()
+    : "";
+
+  if (!raw) {
+    return fallbackName ? [fallbackName] : [""];
+  }
+
+  let cleaned = raw
+    .replace(/\s*,\s*and\s+/gi, "|||")
+    .replace(/\s+and\s+/gi, "|||");
+
+  const parts = cleaned
+    .split("|||")
+    .flatMap(part => part.split(/\s*,\s*/))
+    .map(author => author.trim())
+    .filter(Boolean);
+
+  return parts.length ? parts : [fallbackName || ""];
+}
+
+function renderAuthorRows(number, authorsText, fallbackName) {
+  const authors = splitAuthorsForInputs(authorsText, fallbackName);
+
+  return authors.map((author, index) => {
+    return `
+      <div class="author-row" data-author-row="${number}">
+        <input
+          type="text"
+          class="author-input-${number}"
+          value="${escapeHtml(author)}"
+          placeholder="Example: A. Author"
+          oninput="updateAuthorPreview(${number})"
+        />
+
+        <button
+          type="button"
+          class="remove-author-btn"
+          onclick="removeAuthorRow(this, ${number})"
+        >
+          Delete
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderSelectedPaperForm(paper, number, researcherId, researcherName = "") {
+  if (!paper || !paper.title) {
+    return `
+      <div class="selected-paper-admin-card">
+        <h3>Selected Paper ${number}</h3>
+        <p>No selected paper found yet. Please run the Scopus automation first.</p>
+      </div>
+    `;
+  }
+
+  const paperId = paper.id || "";
+  const scopusLink = paper.scopus_link || "#";
+  const fallbackAuthor = researcherName || "";
+
+  return `
+    <div class="selected-paper-admin-card">
+      <h3>Selected Paper ${number}</h3>
+
+      <p><strong>Title:</strong> ${escapeHtml(paper.title || "")}</p>
+
+      <div style="margin: 12px 0;">
+        ${
+          scopusLink && scopusLink !== "#"
+            ? `<a href="${escapeHtml(scopusLink)}" target="_blank" rel="noopener noreferrer" class="open-scopus-btn">Open in Scopus</a>`
+            : `<span style="color:red;font-weight:800;">No Scopus link available</span>`
+        }
+      </div>
+
+      <input type="hidden" id="paper_id_${number}" value="${escapeHtml(paperId)}">
+      <input type="hidden" id="researcher_id_${number}" value="${escapeHtml(researcherId)}">
+      <input type="hidden" id="title_${number}" value="${escapeHtml(paper.title || "")}">
+      <input type="hidden" id="scopus_link_${number}" value="${escapeHtml(scopusLink)}">
+      <input type="hidden" id="authors_${number}" value="${escapeHtml(paper.authors || fallbackAuthor)}">
+
+      <div class="selected-paper-grid">
+        <div class="selected-paper-full">
+          <label>Authors</label>
+
+          <div id="authorList_${number}" class="author-list-box">
+            ${renderAuthorRows(number, paper.authors || "", fallbackAuthor)}
+          </div>
+
+          <button
+            type="button"
+            class="add-author-btn"
+            onclick="addAuthorRow(${number})"
+          >
+            + Add Author
+          </button>
+
+          <div class="author-preview">
+            <strong>Reference author format:</strong>
+            <span id="authorPreview_${number}"></span>
+          </div>
+        </div>
+
+        <div>
+          <label>DOI</label>
+          <input type="text" id="doi_${number}" value="${escapeHtml(paper.doi || "")}" placeholder="DOI">
+        </div>
+
+        <div>
+          <label>Journal</label>
+          <input type="text" id="journal_${number}" value="${escapeHtml(paper.journal || "")}" placeholder="Journal name">
+        </div>
+
+        <div>
+          <label>Publication Date / Year</label>
+          <input type="text" id="publication_date_${number}" value="${escapeHtml(paper.publication_date || "")}" placeholder="2025 or 2025-01-01">
+        </div>
+
+        <div>
+          <label>Volume</label>
+          <input type="text" id="volume_${number}" value="${escapeHtml(paper.volume || "")}" placeholder="Volume">
+        </div>
+
+        <div>
+          <label>Issue</label>
+          <input type="text" id="issue_${number}" value="${escapeHtml(paper.issue || "")}" placeholder="Issue">
+        </div>
+
+        <div>
+          <label>Pages</label>
+          <input type="text" id="page_range_${number}" value="${escapeHtml(paper.page_range || "")}" placeholder="12-25">
+        </div>
+
+        <div class="selected-paper-full">
+          <label>Abstract</label>
+          <textarea id="abstract_${number}" rows="6" placeholder="Paste abstract here">${escapeHtml(paper.abstract || "")}</textarea>
+        </div>
+
+        <div class="selected-paper-full">
+          <label>Keywords</label>
+          <textarea id="keywords_${number}" rows="3" placeholder="Example: Machine learning; Image forgery; CNN">${escapeHtml(paper.keywords || "")}</textarea>
+        </div>
+
+        <div class="selected-paper-full">
+          <label>Index Terms</label>
+          <textarea id="index_terms_${number}" rows="3" placeholder="Optional">${escapeHtml(paper.index_terms || "")}</textarea>
+        </div>
+      </div>
+
+      <button class="save-selected-paper-btn" onclick="saveSelectedPaper(${number})">
+        Save Metadata & Generate Embedding
+      </button>
+    </div>
+  `;
+}
+
+function getAuthorInputs(number) {
+  return Array.from(document.querySelectorAll(`.author-input-${number}`));
+}
+
+function buildFormattedAuthors(number) {
+  const authors = getAuthorInputs(number)
+    .map(input => input.value.trim())
+    .filter(Boolean);
+
+  if (authors.length === 0) return "";
+  if (authors.length === 1) return authors[0];
+  if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
+
+  return `${authors.slice(0, -1).join(", ")}, and ${authors[authors.length - 1]}`;
+}
+
+function updateAuthorPreview(number) {
+  const formattedAuthors = buildFormattedAuthors(number);
+
+  const hiddenInput = document.getElementById(`authors_${number}`);
+  const preview = document.getElementById(`authorPreview_${number}`);
+
+  if (hiddenInput) hiddenInput.value = formattedAuthors;
+  if (preview) preview.textContent = formattedAuthors || "No authors added";
+}
+
+function addAuthorRow(number) {
+  const list = document.getElementById(`authorList_${number}`);
+
+  const row = document.createElement("div");
+  row.className = "author-row";
+  row.setAttribute("data-author-row", number);
+
+  row.innerHTML = `
+    <input
+      type="text"
+      class="author-input-${number}"
+      placeholder="Example: A. Author"
+      oninput="updateAuthorPreview(${number})"
+    />
+
+    <button
+      type="button"
+      class="remove-author-btn"
+      onclick="removeAuthorRow(this, ${number})"
+    >
+      Delete
+    </button>
+  `;
+
+  list.appendChild(row);
+
+  const input = row.querySelector("input");
+  input.focus();
+
+  updateAuthorPreview(number);
+}
+
+function removeAuthorRow(button, number) {
+  const list = document.getElementById(`authorList_${number}`);
+  const rows = list.querySelectorAll(".author-row");
+
+  if (rows.length <= 1) {
+    const input = rows[0].querySelector("input");
+    input.value = "";
+    updateAuthorPreview(number);
+    return;
+  }
+
+  button.closest(".author-row").remove();
+  updateAuthorPreview(number);
+}
+
+async function saveSelectedPaper(number) {
+  const payload = {
+    paper_id: document.getElementById(`paper_id_${number}`).value || null,
+    researcher_id: document.getElementById(`researcher_id_${number}`).value,
+    title: document.getElementById(`title_${number}`).value,
+    scopus_link: document.getElementById(`scopus_link_${number}`).value,
+    authors: document.getElementById(`authors_${number}`).value,
+    doi: document.getElementById(`doi_${number}`).value,
+    journal: document.getElementById(`journal_${number}`).value,
+    publication_date: document.getElementById(`publication_date_${number}`).value,
+    volume: document.getElementById(`volume_${number}`).value,
+    issue: document.getElementById(`issue_${number}`).value,
+    page_range: document.getElementById(`page_range_${number}`).value,
+    abstract: document.getElementById(`abstract_${number}`).value,
+    keywords: document.getElementById(`keywords_${number}`).value,
+    index_terms: document.getElementById(`index_terms_${number}`).value,
+  };
+
+  try {
+    const response = await fetch("/api/admin/update-selected-paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      alert("Failed: " + (data.error || "Could not save selected paper"));
+      return;
+    }
+
+    alert("Selected paper saved and embedding generated successfully.");
+    openSelectedPapersModal(currentSelectedResearcherId);
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+}
+
+function closeSelectedPapersModal() {
+  document.getElementById("selectedPapersModal").style.display = "none";
+}
+
+    function closePublicationsModal() {
+      document.getElementById("publicationsModal").style.display = "none";
+    }
+
+    function goHome() {
+      window.location.href = "home.html";
+    }
+
+    async function logout() {
+      const db = getSupabaseClient();
+
+      if (db) {
+        await db.auth.signOut();
+      }
+
+      window.location.href = "login.html";
+    }
+
+    async function initAdminPage() {
+      const allowed = await checkAdminAccess();
+
+      if (allowed) {
+        await loadDashboardData();
+      }
+    }
+
+    window.addEventListener("click", function(event) {
+  const publicationsModal = document.getElementById("publicationsModal");
+  const selectedPapersModal = document.getElementById("selectedPapersModal");
+
+  if (event.target === publicationsModal) {
+    closePublicationsModal();
+  }
+
+  if (event.target === selectedPapersModal) {
+    closeSelectedPapersModal();
+  }
+});
+
+    initAdminPage();
+  </script>
+</body>
+</html>
