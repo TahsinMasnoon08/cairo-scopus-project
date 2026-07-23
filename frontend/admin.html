@@ -409,6 +409,191 @@
       word-break: break-word;
     }
 
+.selected-paper-admin-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.selected-paper-admin-card h3 {
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.selected-paper-admin-card label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.selected-paper-admin-card input,
+.selected-paper-admin-card textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.selected-paper-admin-card input:focus,
+.selected-paper-admin-card textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.selected-paper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.selected-paper-full {
+  grid-column: 1 / -1;
+}
+
+.selected-paper-note {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  padding: 13px 15px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.open-scopus-btn {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  margin-right: 8px;
+}
+
+.open-scopus-btn:hover {
+  background: #1d4ed8;
+}
+
+.save-selected-paper-btn {
+  margin-top: 14px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.save-selected-paper-btn:hover {
+  background: #15803d;
+}
+
+.table-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.add-more-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.add-more-btn:hover {
+  opacity: 0.92;
+}
+
+.mini-btn {
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mini-btn:hover {
+  background: #bfdbfe;
+}
+
+.author-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.author-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.author-row input {
+  width: 100%;
+}
+
+.remove-author-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.remove-author-btn:hover {
+  background: #fecaca;
+}
+
+.add-author-btn {
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 900;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.add-author-btn:hover {
+  background: #bfdbfe;
+}
+
+.author-preview {
+  margin-top: 8px;
+  background: #f1f5f9;
+  border: 1px dashed #cbd5e1;
+  color: #334155;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
     @media (max-width: 1200px) {
       .cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -419,6 +604,10 @@
       .navbar {
         padding: 16px 20px;
       }
+
+      .selected-paper-grid {
+  grid-template-columns: 1fr;
+}
 
       .container {
         padding: 25px 20px;
@@ -434,6 +623,15 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .table-header-actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.add-more-btn {
+  width: 100%;
+}
 
       .nav-actions {
         width: 100%;
@@ -534,8 +732,8 @@
       </div>
     </div>
 
-    <div class="form-card">
-      <h2>Add New Lecturer</h2>
+    <div class="form-card" id="addLecturerSection">
+  <h2>Add New Lecturer</h2>
 
       <div class="form-grid">
         <div class="form-group">
@@ -548,10 +746,18 @@
           <input type="text" id="scopusAuthorId" placeholder="Example: 56105259400" />
         </div>
 
-        <div class="form-group">
-          <label for="scopusProfileUrl">Scopus Profile URL</label>
-          <input type="text" id="scopusProfileUrl" placeholder="Auto-generated if left empty" />
-        </div>
+<div class="form-group">
+  <label for="scopusProfileUrl">Scopus Profile URL</label>
+  <input
+    type="text"
+    id="scopusProfileUrl"
+    placeholder="Paste Scopus profile link here"
+    oninput="extractAuthorIdFromScopusLink()"
+  />
+  <button type="button" class="mini-btn" onclick="extractAuthorIdFromScopusLink()">
+    Extract Author ID
+  </button>
+</div>
 
         <div class="form-group">
           <label for="searchKeyword">Search Keyword</label>
@@ -565,8 +771,14 @@
       </div>
     </div>
 
-    <div class="table-card">
-      <h2>Researchers</h2>
+<div class="table-card">
+  <div class="table-header-actions">
+    <h2>Researchers</h2>
+
+    <button class="add-more-btn" onclick="scrollToAddLecturer()">
+      + Add More Lecturer
+    </button>
+  </div>
 
       <div class="table-scroll">
         <table>
@@ -627,6 +839,25 @@
     </div>
   </div>
 
+  <div id="selectedPapersModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h2 id="selectedPapersTitle">Selected Papers</h2>
+          <p>
+            View selected papers detected by automation and add metadata for semantic matching.
+          </p>
+        </div>
+
+        <button class="close-btn" onclick="closeSelectedPapersModal()">×</button>
+      </div>
+
+      <div class="modal-content" id="selectedPapersContent">
+        <p>Loading selected papers...</p>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth.js"></script>
 
@@ -634,6 +865,7 @@
     let researchersCache = [];
     let currentResearcherId = null;
     let currentResearcherName = "";
+    let currentSelectedResearcherId = null;
 
     function getSupabaseClient() {
       if (typeof supabaseClient !== "undefined") return supabaseClient;
@@ -801,7 +1033,9 @@
             <td>
               <div class="action-group">
                 <button class="action-btn" onclick="viewPublicationsById('${safeId}')">View Publications</button>
-                <button class="action-btn delete-btn" onclick="deleteLecturer('${safeId}')">Delete</button>
+<button class="action-btn" onclick="openSelectedPapersModal('${safeId}')">Selected Papers</button>
+<button class="action-btn delete-btn" onclick="deleteLecturer('${safeId}')">Delete</button>
+                
               </div>
             </td>
           </tr>
@@ -812,6 +1046,50 @@
     function generateScopusProfileUrl(authorId) {
       return `https://www.scopus.com/authid/detail.uri?authorId=${encodeURIComponent(authorId)}`;
     }
+
+    function extractAuthorIdFromScopusLink() {
+  const linkInput = document.getElementById("scopusProfileUrl");
+  const authorIdInput = document.getElementById("scopusAuthorId");
+
+  const link = linkInput.value.trim();
+
+  if (!link) return;
+
+  let authorId = "";
+
+  const authorIdMatch = link.match(/[?&]authorId=([^&]+)/);
+
+  if (authorIdMatch) {
+    authorId = decodeURIComponent(authorIdMatch[1]);
+  }
+
+  if (!authorId) {
+    const numericMatch = link.match(/\b\d{8,20}\b/);
+
+    if (numericMatch) {
+      authorId = numericMatch[0];
+    }
+  }
+
+  if (authorId) {
+    authorIdInput.value = authorId;
+  }
+}
+
+function scrollToAddLecturer() {
+  const section = document.getElementById("addLecturerSection");
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
+  setTimeout(() => {
+    document.getElementById("lecturerName")?.focus();
+  }, 400);
+}
 
     function clearLecturerForm() {
       document.getElementById("lecturerName").value = "";
@@ -1122,6 +1400,330 @@
       await loadDashboardData();
     }
 
+    async function openSelectedPapersModal(researcherId) {
+  currentSelectedResearcherId = researcherId;
+
+  const modal = document.getElementById("selectedPapersModal");
+  const title = document.getElementById("selectedPapersTitle");
+  const content = document.getElementById("selectedPapersContent");
+
+  modal.style.display = "block";
+  title.textContent = "Selected Papers";
+  content.innerHTML = "<p>Loading selected papers...</p>";
+
+  try {
+    const response = await fetch(`/api/admin/selected-papers/${encodeURIComponent(researcherId)}`);
+
+    if (!response.ok) {
+      throw new Error(`API error ${response.status}: ${response.statusText}`);
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error("Selected papers API did not return JSON. Please check the /api/admin/selected-papers route in server.js.");
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      content.innerHTML = `<p style="color:red;">${escapeHtml(data.error || "Failed to load selected papers.")}</p>`;
+      return;
+    }
+
+    title.textContent = `${data.researcher?.name || "Researcher"} - Selected Papers`;
+
+    content.innerHTML = `
+      <div class="selected-paper-note">
+        These selected papers were detected by automation based on the researcher h-index.
+        Open the Scopus article, copy the missing metadata, then save it here to improve semantic reference matching.
+      </div>
+
+      ${renderSelectedPaperForm(data.selected_paper_1, 1, researcherId, data.researcher?.name || "")}
+${renderSelectedPaperForm(data.selected_paper_2, 2, researcherId, data.researcher?.name || "")}
+    `;
+
+    updateAuthorPreview(1);
+updateAuthorPreview(2);
+  } catch (error) {
+    content.innerHTML = `<p style="color:red;">${escapeHtml(error.message)}</p>`;
+  }
+}
+
+function splitAuthorsForInputs(authorsText, fallbackName) {
+  const raw = authorsText && String(authorsText).trim() !== ""
+    ? String(authorsText).trim()
+    : "";
+
+  if (!raw) {
+    return fallbackName ? [fallbackName] : [""];
+  }
+
+  let cleaned = raw
+    .replace(/\s*,\s*and\s+/gi, "|||")
+    .replace(/\s+and\s+/gi, "|||");
+
+  const parts = cleaned
+    .split("|||")
+    .flatMap(part => part.split(/\s*,\s*/))
+    .map(author => author.trim())
+    .filter(Boolean);
+
+  return parts.length ? parts : [fallbackName || ""];
+}
+
+function renderAuthorRows(number, authorsText, fallbackName) {
+  const authors = splitAuthorsForInputs(authorsText, fallbackName);
+
+  return authors.map((author, index) => {
+    return `
+      <div class="author-row" data-author-row="${number}">
+        <input
+          type="text"
+          class="author-input-${number}"
+          value="${escapeHtml(author)}"
+          placeholder="Example: A. Author"
+          oninput="updateAuthorPreview(${number})"
+        />
+
+        <button
+          type="button"
+          class="remove-author-btn"
+          onclick="removeAuthorRow(this, ${number})"
+        >
+          Delete
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderSelectedPaperForm(paper, number, researcherId, researcherName = "") {
+  if (!paper || !paper.title) {
+    return `
+      <div class="selected-paper-admin-card">
+        <h3>Selected Paper ${number}</h3>
+        <p>No selected paper found yet. Please run the Scopus automation first.</p>
+      </div>
+    `;
+  }
+
+  const paperId = paper.id || "";
+  const scopusLink = paper.scopus_link || "#";
+  const fallbackAuthor = researcherName || "";
+
+  return `
+    <div class="selected-paper-admin-card">
+      <h3>Selected Paper ${number}</h3>
+
+      <p><strong>Title:</strong> ${escapeHtml(paper.title || "")}</p>
+
+      <div style="margin: 12px 0;">
+        ${
+          scopusLink && scopusLink !== "#"
+            ? `<a href="${escapeHtml(scopusLink)}" target="_blank" rel="noopener noreferrer" class="open-scopus-btn">Open in Scopus</a>`
+            : `<span style="color:red;font-weight:800;">No Scopus link available</span>`
+        }
+      </div>
+
+      <input type="hidden" id="paper_id_${number}" value="${escapeHtml(paperId)}">
+      <input type="hidden" id="researcher_id_${number}" value="${escapeHtml(researcherId)}">
+      <input type="hidden" id="title_${number}" value="${escapeHtml(paper.title || "")}">
+      <input type="hidden" id="scopus_link_${number}" value="${escapeHtml(scopusLink)}">
+      <input type="hidden" id="authors_${number}" value="${escapeHtml(paper.authors || fallbackAuthor)}">
+
+      <div class="selected-paper-grid">
+        <div class="selected-paper-full">
+          <label>Authors</label>
+
+          <div id="authorList_${number}" class="author-list-box">
+            ${renderAuthorRows(number, paper.authors || "", fallbackAuthor)}
+          </div>
+
+          <button
+            type="button"
+            class="add-author-btn"
+            onclick="addAuthorRow(${number})"
+          >
+            + Add Author
+          </button>
+
+          <div class="author-preview">
+            <strong>Reference author format:</strong>
+            <span id="authorPreview_${number}"></span>
+          </div>
+        </div>
+
+        <div>
+          <label>DOI</label>
+          <input type="text" id="doi_${number}" value="${escapeHtml(paper.doi || "")}" placeholder="DOI">
+        </div>
+
+        <div>
+          <label>Journal</label>
+          <input type="text" id="journal_${number}" value="${escapeHtml(paper.journal || "")}" placeholder="Journal name">
+        </div>
+
+        <div>
+          <label>Publication Date / Year</label>
+          <input type="text" id="publication_date_${number}" value="${escapeHtml(paper.publication_date || "")}" placeholder="2025 or 2025-01-01">
+        </div>
+
+        <div>
+          <label>Volume</label>
+          <input type="text" id="volume_${number}" value="${escapeHtml(paper.volume || "")}" placeholder="Volume">
+        </div>
+
+        <div>
+          <label>Issue</label>
+          <input type="text" id="issue_${number}" value="${escapeHtml(paper.issue || "")}" placeholder="Issue">
+        </div>
+
+        <div>
+          <label>Pages</label>
+          <input type="text" id="page_range_${number}" value="${escapeHtml(paper.page_range || "")}" placeholder="12-25">
+        </div>
+
+        <div class="selected-paper-full">
+          <label>Abstract</label>
+          <textarea id="abstract_${number}" rows="6" placeholder="Paste abstract here">${escapeHtml(paper.abstract || "")}</textarea>
+        </div>
+
+        <div class="selected-paper-full">
+          <label>Keywords</label>
+          <textarea id="keywords_${number}" rows="3" placeholder="Example: Machine learning; Image forgery; CNN">${escapeHtml(paper.keywords || "")}</textarea>
+        </div>
+
+        <div class="selected-paper-full">
+          <label>Index Terms</label>
+          <textarea id="index_terms_${number}" rows="3" placeholder="Optional">${escapeHtml(paper.index_terms || "")}</textarea>
+        </div>
+      </div>
+
+      <button class="save-selected-paper-btn" onclick="saveSelectedPaper(${number})">
+        Save Metadata & Generate Embedding
+      </button>
+    </div>
+  `;
+}
+
+function getAuthorInputs(number) {
+  return Array.from(document.querySelectorAll(`.author-input-${number}`));
+}
+
+function buildFormattedAuthors(number) {
+  const authors = getAuthorInputs(number)
+    .map(input => input.value.trim())
+    .filter(Boolean);
+
+  if (authors.length === 0) return "";
+  if (authors.length === 1) return authors[0];
+  if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
+
+  return `${authors.slice(0, -1).join(", ")}, and ${authors[authors.length - 1]}`;
+}
+
+function updateAuthorPreview(number) {
+  const formattedAuthors = buildFormattedAuthors(number);
+
+  const hiddenInput = document.getElementById(`authors_${number}`);
+  const preview = document.getElementById(`authorPreview_${number}`);
+
+  if (hiddenInput) hiddenInput.value = formattedAuthors;
+  if (preview) preview.textContent = formattedAuthors || "No authors added";
+}
+
+function addAuthorRow(number) {
+  const list = document.getElementById(`authorList_${number}`);
+
+  const row = document.createElement("div");
+  row.className = "author-row";
+  row.setAttribute("data-author-row", number);
+
+  row.innerHTML = `
+    <input
+      type="text"
+      class="author-input-${number}"
+      placeholder="Example: A. Author"
+      oninput="updateAuthorPreview(${number})"
+    />
+
+    <button
+      type="button"
+      class="remove-author-btn"
+      onclick="removeAuthorRow(this, ${number})"
+    >
+      Delete
+    </button>
+  `;
+
+  list.appendChild(row);
+
+  const input = row.querySelector("input");
+  input.focus();
+
+  updateAuthorPreview(number);
+}
+
+function removeAuthorRow(button, number) {
+  const list = document.getElementById(`authorList_${number}`);
+  const rows = list.querySelectorAll(".author-row");
+
+  if (rows.length <= 1) {
+    const input = rows[0].querySelector("input");
+    input.value = "";
+    updateAuthorPreview(number);
+    return;
+  }
+
+  button.closest(".author-row").remove();
+  updateAuthorPreview(number);
+}
+
+async function saveSelectedPaper(number) {
+  const payload = {
+    paper_id: document.getElementById(`paper_id_${number}`).value || null,
+    researcher_id: document.getElementById(`researcher_id_${number}`).value,
+    title: document.getElementById(`title_${number}`).value,
+    scopus_link: document.getElementById(`scopus_link_${number}`).value,
+    authors: document.getElementById(`authors_${number}`).value,
+    doi: document.getElementById(`doi_${number}`).value,
+    journal: document.getElementById(`journal_${number}`).value,
+    publication_date: document.getElementById(`publication_date_${number}`).value,
+    volume: document.getElementById(`volume_${number}`).value,
+    issue: document.getElementById(`issue_${number}`).value,
+    page_range: document.getElementById(`page_range_${number}`).value,
+    abstract: document.getElementById(`abstract_${number}`).value,
+    keywords: document.getElementById(`keywords_${number}`).value,
+    index_terms: document.getElementById(`index_terms_${number}`).value,
+  };
+
+  try {
+    const response = await fetch("/api/admin/update-selected-paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      alert("Failed: " + (data.error || "Could not save selected paper"));
+      return;
+    }
+
+    alert("Selected paper saved and embedding generated successfully.");
+    openSelectedPapersModal(currentSelectedResearcherId);
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+}
+
+function closeSelectedPapersModal() {
+  document.getElementById("selectedPapersModal").style.display = "none";
+}
+
     function closePublicationsModal() {
       document.getElementById("publicationsModal").style.display = "none";
     }
@@ -1149,12 +1751,17 @@
     }
 
     window.addEventListener("click", function(event) {
-      const modal = document.getElementById("publicationsModal");
+  const publicationsModal = document.getElementById("publicationsModal");
+  const selectedPapersModal = document.getElementById("selectedPapersModal");
 
-      if (event.target === modal) {
-        closePublicationsModal();
-      }
-    });
+  if (event.target === publicationsModal) {
+    closePublicationsModal();
+  }
+
+  if (event.target === selectedPapersModal) {
+    closeSelectedPapersModal();
+  }
+});
 
     initAdminPage();
   </script>
