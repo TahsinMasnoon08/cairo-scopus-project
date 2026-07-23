@@ -3,7 +3,7 @@ const path = require("path");
 const cors = require("cors");
 const cron = require("node-cron");
 const axios = require("axios");
-const { pipeline } = require("@xenova/transformers");
+let pipelineFactory = null;
 const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
@@ -362,8 +362,13 @@ Year: ${paper.publication_date ? String(paper.publication_date).slice(0, 4) : ""
 let embeddingPipeline = null;
 
 async function getEmbeddingPipeline() {
+  if (!pipelineFactory) {
+    const transformers = await import("@xenova/transformers");
+    pipelineFactory = transformers.pipeline;
+  }
+
   if (!embeddingPipeline) {
-    embeddingPipeline = await pipeline(
+    embeddingPipeline = await pipelineFactory(
       "feature-extraction",
       "Xenova/all-MiniLM-L6-v2"
     );
